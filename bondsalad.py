@@ -56,7 +56,7 @@ class App(customtkinter.CTk):
         self.seg_button_1.grid(row=0, column=0, padx=(20, 10), pady=(10, 0), sticky="ew")
         
         # default values 
-        self.seg_button_1.configure(values=["User Manual", "Support"])
+        self.seg_button_1.configure(values=["User Guide", "Support"])
         self.seg_button_1.set("User Manual")
 
     def open_input_dialog_event(self):
