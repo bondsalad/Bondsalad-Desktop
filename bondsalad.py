@@ -1,7 +1,12 @@
 import os
 import tkinter
-# import tkinter.messagebox
 import customtkinter
+
+import asyncio
+from ib_insync import IB, util
+
+
+util.patchAsyncio()
 
 customtkinter.set_appearance_mode("Light")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -34,7 +39,7 @@ class App(customtkinter.CTk):
         self.logo_label.grid(row=4, column=0, padx=20, pady=(20, 10))
         self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="1. See Portfolio")
         self.sidebar_button_1.grid(row=0, column=0, padx=20, pady=10)
-        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="2. Connect Broker")
+        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, command=self.connect_broker, text="2. Connect Broker")
         self.sidebar_button_2.grid(row=1, column=0, padx=20, pady=10)
         self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="3. Copy Portfolio")
         self.sidebar_button_3.grid(row=2, column=0, padx=20, pady=10)
@@ -59,21 +64,26 @@ class App(customtkinter.CTk):
         self.seg_button_1.configure(values=["User Guide", "Support"])
         self.seg_button_1.set("User Manual")
 
-    def open_input_dialog_event(self):
-        dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="CTkInputDialog")
-        print("CTkInputDialog:", dialog.get_input())
-
-    def change_appearance_mode_event(self, new_appearance_mode: str):
-        customtkinter.set_appearance_mode(new_appearance_mode)
-
-    def change_scaling_event(self, new_scaling: str):
-        new_scaling_float = int(new_scaling.replace("%", "")) / 100
-        customtkinter.set_widget_scaling(new_scaling_float)
 
     def sidebar_button_event(self):
-        print("sidebar_button click")
+        # print("sidebar_button click")
         self.textbox.insert("0.0", "function not assigned. \n\n")
 
+    
+    def connect_broker(self):
+        try:
+            self.ib = IB().connect('127.0.0.1', 4002, 1)
+            IB().sleep(1.5)
+
+            self.connection = self.ib.isConnected()
+            print(self.connection)
+            type(self.connection)
+
+            if self.connection == True:
+                self.textbox.insert("0.0", "*** connected! ***\n\n")
+
+        except:
+            self.textbox.insert("0.0", "Either you are already connected (in that case ibgateway shows a client1 connection) or something didn't work. In that case proceed this way:\n\nInstall and/or open IBGateway\n\nGo To Configuration->Settings->API->Settings\n\nUncheck -Read Only API-\n\nCheck that socket port matches 4002 otherwise change it\n\nClick on -Connect Broker- once again and wait for the output. \n\n")
 
 if __name__ == "__main__":
     app = App()
