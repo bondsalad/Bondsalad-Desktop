@@ -1,0 +1,9 @@
+1 change language dropdown button (italian)
+
+2 select broker button (between IB and DEGIRO)
+
+3 api connection and execution of:
+	 50% brk.b 
+	 20% stocks selection (xle for now)
+	 20% bonds selection (7-10y us treasuries for now)
+	 10% physical gold
