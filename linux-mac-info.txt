@@ -1,0 +1,5 @@
+python-tk package has to be installed
+
+on linux run sudo apt-get install: python-tk
+
+on mac (or linux also) install homebrew and then run: brew install python-tk
