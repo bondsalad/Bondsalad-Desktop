@@ -35,16 +35,21 @@ class App(customtkinter.CTk):
         self.sidebar_frame = customtkinter.CTkFrame(self, width=140, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
         self.sidebar_frame.grid_rowconfigure(3, weight=1)
+        
+        self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="See Portfolio")
+        self.sidebar_button_1.grid(row=0, column=0, padx=20, pady=10)
+
+        self.optionmenu_1 = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["Degiro", "Interactive Brokers"])
+        self.optionmenu_1.grid(row=1, column=0, padx=20, pady=10)
+
+        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.copy_portfolio, text="Copy Portfolio")
+        self.sidebar_button_3.grid(row=2, column=0, padx=20, pady=10)
+
+        self.sidebar_button_4 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="Donate Now", fg_color="#FFBF00", text_color="#000000")
+        self.sidebar_button_4.grid(row=3, column=0, padx=20, pady=10)
+
         self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="powered by bondsalad.org", font=customtkinter.CTkFont(size=12, weight="bold"))
         self.logo_label.grid(row=4, column=0, padx=20, pady=(20, 10))
-        self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="1. See Portfolio")
-        self.sidebar_button_1.grid(row=0, column=0, padx=20, pady=10)
-        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, command=self.connect_broker, text="2. Connect Broker")
-        self.sidebar_button_2.grid(row=1, column=0, padx=20, pady=10)
-        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="3. Copy Portfolio")
-        self.sidebar_button_3.grid(row=2, column=0, padx=20, pady=10)
-        self.sidebar_button_4 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="4. Donate Now", fg_color="#FFBF00", text_color="#000000")
-        self.sidebar_button_4.grid(row=3, column=0, padx=20, pady=10)
 
         # create textbox
         self.textbox = customtkinter.CTkTextbox(self)  # (self, width=250)
@@ -62,7 +67,9 @@ class App(customtkinter.CTk):
         
         # default values 
         self.seg_button_1.configure(values=["User Guide", "Support"])
-        self.seg_button_1.set("User Manual")
+        self.seg_button_1.set("User Guide")
+        self.optionmenu_1.set("Select Broker")
+
 
 
     def sidebar_button_event(self):
@@ -70,20 +77,38 @@ class App(customtkinter.CTk):
         self.textbox.insert("0.0", "function not assigned. \n\n")
 
     
-    def connect_broker(self):
-        try:
-            self.ib = IB().connect('127.0.0.1', 4002, 1)
-            IB().sleep(1.5)
+    def copy_portfolio(self):
+        """ given selected broker, performs connection test and
+            executes portfolio orders"""
+        # broker selection condition
+        if self.optionmenu_1.get() == "Interactive Brokers":
+            # interactive brokers connection test
+            try:
+                self.ib = IB().connect('127.0.0.1', 4002, 1)
+                IB().sleep(1.5)
 
-            self.connection = self.ib.isConnected()
-            print(self.connection)
-            type(self.connection)
+                self.connection = self.ib.isConnected()
+                print(self.connection)
+                type(self.connection)
 
-            if self.connection == True:
-                self.textbox.insert("0.0", "*** connected! ***\n\n")
+                if self.connection == True:
+                    self.textbox.insert("0.0", "*** connected! ***\n\n \n\n")
 
-        except:
-            self.textbox.insert("0.0", "Either you are already connected (in that case ibgateway shows a client1 connection) or something didn't work. In that case proceed this way:\n\nInstall and/or open IBGateway\n\nGo To Configuration->Settings->API->Settings\n\nUncheck -Read Only API-\n\nCheck that socket port matches 4002 otherwise change it\n\nClick on -Connect Broker- once again and wait for the output. \n\n")
+            except:
+                self.textbox.insert("0.0", "Either you are already connected (in that case ibgateway shows a client1 connection) or something didn't work. In that case proceed this way:\n\nInstall and/or open IBGateway\n\nGo To Configuration->Settings->API->Settings\n\nUncheck -Read Only API-\n\nCheck that socket port matches 4002 otherwise change it\n\nClick on -Connect Broker- once again and wait for the output. \n\n \n\n")
+            # interactive brokers execution
+            #############################
+        
+        elif self.optionmenu_1.get() == "Degiro":
+            # degiro connection test
+            # degiro execution
+            self.textbox.insert("0.0", "Degiro functions not coded yet. \n\n \n\n")
+            #############################
+        
+        else:
+            # broker not selected
+            self.textbox.insert("0.0", "Broker not selected yet. \n\nPlease select a broker. \n\n \n\n")
+
 
 if __name__ == "__main__":
     app = App()
