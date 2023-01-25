@@ -5,6 +5,9 @@ import customtkinter
 import asyncio
 from ib_insync import IB, util
 
+from degiro_connector.trading.api import API as TradingAPI
+from degiro_connector.trading.models.trading_pb2 import Credentials
+
 
 util.patchAsyncio()
 
@@ -75,8 +78,8 @@ class App(customtkinter.CTk):
     def sidebar_button_event(self):
         # print("sidebar_button click")
         self.textbox.insert("0.0", "function not assigned. \n\n")
-
     
+
     def copy_portfolio(self):
         """ given selected broker, performs connection test and
             executes portfolio orders"""
@@ -97,12 +100,30 @@ class App(customtkinter.CTk):
             except:
                 self.textbox.insert("0.0", "Either you are already connected (in that case ibgateway shows a client1 connection) or something didn't work. In that case proceed this way:\n\nInstall and/or open IBGateway\n\nGo To Configuration->Settings->API->Settings\n\nUncheck -Read Only API-\n\nCheck that socket port matches 4002 otherwise change it\n\nClick on -Connect Broker- once again and wait for the output. \n\n \n\n")
             # interactive brokers execution
-            #############################
+            ######################################################################################################
         
         elif self.optionmenu_1.get() == "Degiro":
             # degiro connection test
+            try:
+                credentials = Credentials(
+                    int_account=None,
+                    username="username",  # todo. metere ste credenziali in una sorta di entry in modo che la persona le scriva e poi prema invio e il codice parte
+                    password="password",
+                    totp_secret_key=None,
+                    one_time_password=000000,
+                )
+
+                # SETUP TRADING API
+                self.trading_api = TradingAPI(credentials=credentials)
+
+                # CONNECT
+                self.trading_api.connect()
+
+                self.textbox.insert("0.0", "*** connected!***\n\n \n\n")
+            except:
+                self.textbox.insert("0.0", "Something Went Wrong with Degiro connection \n\n \n\n")
+            
             # degiro execution
-            self.textbox.insert("0.0", "Degiro functions not coded yet. \n\n \n\n")
             #############################
         
         else:
