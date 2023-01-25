@@ -21,7 +21,7 @@ class App(customtkinter.CTk):
 
         # configure window
         self.title("Bondsalad")
-        self.geometry(f"{700}x{430}")
+        self.geometry(f"{900}x{600}")
         customtkinter.set_widget_scaling(1.1)
         
         # configure icon
@@ -37,25 +37,40 @@ class App(customtkinter.CTk):
         # create sidebar frame with widgets
         self.sidebar_frame = customtkinter.CTkFrame(self, width=140, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
-        self.sidebar_frame.grid_rowconfigure(3, weight=1)
+        self.sidebar_frame.grid_rowconfigure(7, weight=1)
         
+        # SEE PORTFOLIO
         self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="See Portfolio")
         self.sidebar_button_1.grid(row=0, column=0, padx=20, pady=10)
 
+        # SELECT BROKER
         self.optionmenu_1 = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["Degiro", "Interactive Brokers"])
         self.optionmenu_1.grid(row=1, column=0, padx=20, pady=10)
 
-        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.copy_portfolio, text="Copy Portfolio")
-        self.sidebar_button_3.grid(row=2, column=0, padx=20, pady=10)
+        # DEGIRO LOGIN ENTRY
+        self.login_label = customtkinter.CTkLabel(self.sidebar_frame, text="Required if executing with Degiro",
+                                                  font=customtkinter.CTkFont(size=12))
+        self.login_label.grid(row=2, column=0, padx=20, pady=10)
+        self.username_entry = customtkinter.CTkEntry(self.sidebar_frame, width=150, placeholder_text="username")
+        self.username_entry.grid(row=3, column=0, padx=20, pady=10)
+        self.password_entry = customtkinter.CTkEntry(self.sidebar_frame, width=150, show="*", placeholder_text="password")
+        self.password_entry.grid(row=4, column=0, padx=20, pady=10)
+        self.otp_entry = customtkinter.CTkEntry(self.sidebar_frame, width=150, placeholder_text="otp (if enabled)")
+        self.otp_entry.grid(row=5, column=0, padx=20, pady=10)
 
+        # COPY PORTFOLIO
+        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.copy_portfolio, text="Copy Portfolio")
+        self.sidebar_button_3.grid(row=6, column=0, padx=20, pady=10)
+
+        # DONATE
         self.sidebar_button_4 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="Donate Now", fg_color="#FFBF00", text_color="#000000")
-        self.sidebar_button_4.grid(row=3, column=0, padx=20, pady=10)
+        self.sidebar_button_4.grid(row=7, column=0, padx=20, pady=10)
 
         self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="powered by bondsalad.org", font=customtkinter.CTkFont(size=12, weight="bold"))
-        self.logo_label.grid(row=4, column=0, padx=20, pady=(20, 10))
+        self.logo_label.grid(row=8, column=0, padx=20, pady=(20, 10))
 
         # create textbox
-        self.textbox = customtkinter.CTkTextbox(self)  # (self, width=250)
+        self.textbox = customtkinter.CTkTextbox(self, width=200, height=400)  # (self, width=250)
         self.textbox.grid(row=0, column=1, padx=(20, 10), pady=(20, 0), sticky="nsew")
         self.textbox.insert("0.0", "Welcome to the Bondsalad desktop app! \n\n \n\nIn this box you will see the output of your interactions and \n\nthe solution to the issues you may encounter. \n\n \n\nFor further information please visit the User Guide by \n\nclicking the button below.")
         
