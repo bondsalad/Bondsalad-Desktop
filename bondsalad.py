@@ -40,7 +40,7 @@ class App(customtkinter.CTk):
         self.sidebar_frame.grid_rowconfigure(7, weight=1)
         
         # SEE PORTFOLIO
-        self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="See Portfolio")
+        self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="1. See Portfolio")
         self.sidebar_button_1.grid(row=0, column=0, padx=20, pady=10)
 
         # SELECT BROKER
@@ -59,7 +59,7 @@ class App(customtkinter.CTk):
         self.otp_entry.grid(row=5, column=0, padx=20, pady=10)
 
         # COPY PORTFOLIO
-        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.copy_portfolio, text="Copy Portfolio")
+        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.copy_portfolio, text="3. Copy Portfolio")
         self.sidebar_button_3.grid(row=6, column=0, padx=20, pady=10)
 
         # DONATE
@@ -86,7 +86,7 @@ class App(customtkinter.CTk):
         # default values 
         self.seg_button_1.configure(values=["User Guide", "Support"])
         self.seg_button_1.set("User Guide")
-        self.optionmenu_1.set("Select Broker")
+        self.optionmenu_1.set("2. Select Broker")
 
 
 
@@ -122,10 +122,10 @@ class App(customtkinter.CTk):
             try:
                 credentials = Credentials(
                     int_account=None,
-                    username="username",  # todo. metere ste credenziali in una sorta di entry in modo che la persona le scriva e poi prema invio e il codice parte
-                    password="password",
+                    username=self.username_entry.get(),
+                    password=self.password_entry.get(),
                     totp_secret_key=None,
-                    one_time_password=000000,
+                    one_time_password=int(self.otp_entry.get()),
                 )
 
                 # SETUP TRADING API
