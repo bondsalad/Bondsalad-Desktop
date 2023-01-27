@@ -7,4 +7,5 @@ on mac (or linux also) install homebrew and then run: brew install python-tk
 to generate .exe on unix this is the command:
 pyinstaller --noconfirm --onedir --windowed --add-data ".local/lib/python3.10/site-packages/customtkinter":customtkinter  Documenti/GitHub/Bondsalad-Desktop/bondsalad.py 
 
-mi manca l'icona
+mi manca l'icona dell'exe e poi con il comando sopra il .exe non funziona
+c'è anche da aggiungere la png con --add-data (ora l'ho aggiunta manualmente)
