@@ -1,3 +1,6 @@
+# al momento stiamo usando degiro-connector come libreria
+# perche ci permette di effettuare login con 2fa
+
 import degiroapi
 from degiroapi.product import Product
 from degiroapi.order import Order
