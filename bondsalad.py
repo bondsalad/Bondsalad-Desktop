@@ -1,18 +1,20 @@
+# generic imports
 import os
 import tkinter
 import customtkinter
-
+import webbrowser
+# Interactive Brokers imports
 import asyncio
 from ib_insync import IB, util
-
+# Degiro imports
 from degiro_connector.trading.api import API as TradingAPI
 from degiro_connector.trading.models.trading_pb2 import Credentials
 
 
 util.patchAsyncio()
 
-customtkinter.set_appearance_mode("Light")  # Modes: "System" (standard), "Dark", "Light"
-customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
+customtkinter.set_appearance_mode("Light")
+customtkinter.set_default_color_theme("green")
 
 
 class App(customtkinter.CTk):
@@ -40,7 +42,7 @@ class App(customtkinter.CTk):
         self.sidebar_frame.grid_rowconfigure(7, weight=1)
         
         # SEE PORTFOLIO
-        self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, text="1. See Portfolio")
+        self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.portfolio_web, text="1. See Portfolio")
         self.sidebar_button_1.grid(row=0, column=0, padx=20, pady=10)
 
         # SELECT BROKER
@@ -48,7 +50,7 @@ class App(customtkinter.CTk):
         self.optionmenu_1.grid(row=1, column=0, padx=20, pady=10)
 
         # DEGIRO LOGIN ENTRY
-        self.login_label = customtkinter.CTkLabel(self.sidebar_frame, text="Required if executing with Degiro",
+        self.login_label = customtkinter.CTkLabel(self.sidebar_frame, text="Only required if executing with Degiro",
                                                   font=customtkinter.CTkFont(size=12))
         self.login_label.grid(row=2, column=0, padx=20, pady=10)
         self.username_entry = customtkinter.CTkEntry(self.sidebar_frame, width=150, placeholder_text="username")
@@ -74,13 +76,13 @@ class App(customtkinter.CTk):
         self.textbox.grid(row=0, column=1, padx=(20, 10), pady=(20, 0), sticky="nsew")
         self.textbox.insert("0.0", "Welcome to the Bondsalad desktop app! \n\n \n\nIn this box you will see the output of your interactions and \n\nthe solution to the issues you may encounter. \n\n \n\nFor further information please visit the User Guide by \n\nclicking the button below.")
         
-        # create slider and progressbar frame
-        self.slider_progressbar_frame = customtkinter.CTkFrame(self, fg_color="transparent")
-        self.slider_progressbar_frame.grid(row=1, column=1, columnspan=2, padx=(0, 0), pady=(40, 0), sticky="nsew")
-        self.slider_progressbar_frame.grid_columnconfigure(0, weight=1)
-        self.slider_progressbar_frame.grid_rowconfigure(4, weight=1)
+        # creating a "below textbox" frame
+        self.below_textbox_frame = customtkinter.CTkFrame(self, fg_color="transparent")
+        self.below_textbox_frame.grid(row=1, column=1, columnspan=2, padx=(0, 0), pady=(40, 0), sticky="nsew")
+        self.below_textbox_frame.grid_columnconfigure(0, weight=1)
+        self.below_textbox_frame.grid_rowconfigure(4, weight=1)
         
-        self.seg_button_1 = customtkinter.CTkSegmentedButton(self.slider_progressbar_frame)
+        self.seg_button_1 = customtkinter.CTkSegmentedButton(self.below_textbox_frame)
         self.seg_button_1.grid(row=0, column=0, padx=(20, 10), pady=(10, 0), sticky="ew")
         
         # default values 
@@ -89,10 +91,15 @@ class App(customtkinter.CTk):
         self.optionmenu_1.set("2. Select Broker")
 
 
+    ##### FUNCTIONS #####
 
     def sidebar_button_event(self):
-        # print("sidebar_button click")
-        self.textbox.insert("0.0", "function not assigned. \n\n")
+        self.textbox.insert("0.0", "Function not assigned. \n\n \n\n")
+
+
+    def portfolio_web(self):
+        webbrowser.open("bondsalad.org/#portfolio", new=1)
+        self.textbox.insert("0.0", "Opening portfolio selection in a browser page. \n\n \n\n")
     
 
     def copy_portfolio(self):
@@ -114,8 +121,8 @@ class App(customtkinter.CTk):
 
             except:
                 self.textbox.insert("0.0", "Either you are already connected (in that case ibgateway shows a client1 connection) or something didn't work. In that case proceed this way:\n\nInstall and/or open IBGateway\n\nGo To Configuration->Settings->API->Settings\n\nUncheck -Read Only API-\n\nCheck that socket port matches 4002 otherwise change it\n\nClick on -Connect Broker- once again and wait for the output. \n\n \n\n")
-            # interactive brokers execution
-            ######################################################################################################
+            # interactive brokers execution TODO
+            #####################################
         
         elif self.optionmenu_1.get() == "Degiro":
             # degiro connection test
@@ -138,7 +145,7 @@ class App(customtkinter.CTk):
             except:
                 self.textbox.insert("0.0", "Something Went Wrong with Degiro connection \n\n \n\n")
             
-            # degiro execution
+            # degiro execution TODO
             #############################
         
         else:
