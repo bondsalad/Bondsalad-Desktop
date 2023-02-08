@@ -134,7 +134,12 @@ class App(customtkinter.CTk):
 
             except:
                 self.textbox.insert("0.0", "Either you are already connected (in that case ibgateway shows a client1 connection) or something didn't work. In that case proceed this way:\n\nInstall and/or open IBGateway\n\nGo To Configuration->Settings->API->Settings\n\nUncheck -Read Only API-\n\nCheck that socket port matches 4002 otherwise change it\n\nClick on -Connect Broker- once again and wait for the output. \n\n \n\n")
-            # interactive brokers execution TODO
+            # interactive brokers execution
+            # TODO: read portfolio.json as list of tuples,
+            # close position non contemplated if any,
+            # get cash available in account,
+            # perform "share to buy" calculation leaving some cash as a fee cushion
+            # perform buy orders
             #####################################
 
         elif self.optionmenu_1.get() == "Degiro":
@@ -159,7 +164,8 @@ class App(customtkinter.CTk):
                 self.textbox.insert(
                     "0.0", "Something Went Wrong with Degiro connection \n\n \n\n")
 
-            # degiro execution TODO
+            # degiro execution
+            # TODO: same as for ib
             #############################
 
         else:
