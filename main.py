@@ -7,8 +7,8 @@ import webbrowser
 import asyncio
 from ib_insync import IB, util
 # Degiro imports
-from degiro_connector.trading.api import API as TradingAPI
-from degiro_connector.trading.models.trading_pb2 import Credentials
+# from degiro_connector.trading.api import API as TradingAPI
+# from degiro_connector.trading.models.trading_pb2 import Credentials
 
 
 util.patchAsyncio()
@@ -49,9 +49,11 @@ class App(customtkinter.CTk):
 
         # SELECT BROKER
         self.optionmenu_1 = customtkinter.CTkOptionMenu(
-            self.sidebar_frame, values=["Degiro", "Interactive Brokers"])
+            # self.sidebar_frame, values=["Degiro", "Interactive Brokers"])
+            self.sidebar_frame, values=["Interactive Brokers"])
         self.optionmenu_1.grid(row=1, column=0, padx=20, pady=10)
 
+        """
         # DEGIRO LOGIN ENTRY
         self.login_label = customtkinter.CTkLabel(self.sidebar_frame, text="Only required if executing with Degiro",
                                                   font=customtkinter.CTkFont(size=12))
@@ -65,6 +67,7 @@ class App(customtkinter.CTk):
         self.otp_entry = customtkinter.CTkEntry(
             self.sidebar_frame, width=150, placeholder_text="otp (if enabled)")
         self.otp_entry.grid(row=5, column=0, padx=20, pady=10)
+        """
 
         # COPY PORTFOLIO
         self.sidebar_button_3 = customtkinter.CTkButton(
@@ -142,6 +145,12 @@ class App(customtkinter.CTk):
             # perform buy orders
             #####################################
 
+        else:
+            # broker not selected
+            self.textbox.insert(
+                "0.0", "Broker not selected yet. \n\nPlease select a broker. \n\n \n\n")
+            
+        """
         elif self.optionmenu_1.get() == "Degiro":
             # degiro connection test
             try:
@@ -167,11 +176,7 @@ class App(customtkinter.CTk):
             # degiro execution
             # TODO: same as for ib
             #############################
-
-        else:
-            # broker not selected
-            self.textbox.insert(
-                "0.0", "Broker not selected yet. \n\nPlease select a broker. \n\n \n\n")
+        """
 
 
 if __name__ == "__main__":
